@@ -26,13 +26,10 @@ module.exports = async function (event, context, logger) {
             "'"
     );
     const requestUrl = context.org.baseUrl + results.records[0].VersionData;
-    const headers = JSON.parse(JSON.stringify(event.headers));
-    let buff = Buffer.from(headers['ce-sffncontext'][0], 'base64');  
-    let tokenResponse = JSON.parse(buff.toString('utf-8'));
-
+    
     const requestOptions = {
         method: 'GET',
-        headers: {"Authorization": "Bearer " + tokenResponse.accessToken},
+        headers: {"Authorization": "Bearer " + context.org.data.connConfig.accessToken},
         redirect: 'follow'
     };
 
@@ -40,7 +37,7 @@ module.exports = async function (event, context, logger) {
     const buffer = await response.buffer();
     const image = await jimp.read(buffer);
     // Resize the image to width 150 and heigth 150.
-    const resizedImage = image.rotate(90);
+    const resizedImage = image.rotate(90).greyscale();
     //const resizedImage = image.greyscale();
 
     resizedImage.getBase64(jimp.AUTO, async (err, src) => {

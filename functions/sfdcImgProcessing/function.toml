@@ -1,3 +1,6 @@
 [function]
 name = "sfdcImgProcessing"
 description = "This is a Salesforce Function."
+
+[metadata]
+permissionset = "Salesforce_Functions_Permissions"

@@ -26,7 +26,7 @@ module.exports = async function (event, context, logger) {
             "'"
     );
     const requestUrl = context.org.baseUrl + results.records[0].VersionData;
-    
+
     const requestOptions = {
         method: 'GET',
         headers: {"Authorization": "Bearer " + context.org.data.connConfig.accessToken},
@@ -37,7 +37,7 @@ module.exports = async function (event, context, logger) {
     const buffer = await response.buffer();
     const image = await jimp.read(buffer);
     // Resize the image to width 150 and heigth 150.
-    const resizedImage = image.rotate(90).greyscale();
+    const resizedImage = image.greyscale();
     //const resizedImage = image.greyscale();
 
     resizedImage.getBase64(jimp.AUTO, async (err, src) => {
